@@ -1,0 +1,25 @@
+(( Having cognitive overload.
+
+615423 / 432
+--> (reversed)
+a = int [3, 2, 4, 5, 1, 6]
+b = int [2, 3, 4]
+
+
+2 arrays, one for intermediate value, 
+
+Because 4 > 6: 
+	starting point = a.len - 3
+	3 slots vs 3 slots
+else:
+	4 slots vs 3 slots.
+
+for local slot
+while (check from point, digits > b[idx])
+perform subtraction of array
+	(oh, another array operation.)
+	
+[2, 3, 4]
+234
+	324516
+1st loop 

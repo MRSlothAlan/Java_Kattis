@@ -1,0 +1,38 @@
+Notes: 
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		String number = sc.next();
+		BigInteger in_num = new BigInteger(number, 10);
+		BigInteger cur_factor = new BigInteger("1", 10);
+		BigInteger expected = new BigInteger("0", 10);
+		BigInteger one = new BigInteger("1", 10);
+		// 0 friend = 1 people
+		// 1 friend = 2 people
+		String out_str = "";
+		ArrayList<String> factor_set = new ArrayList<String>();
+		while(!factor_set.contains(cur_factor.toString())) {
+			if (in_num.mod(cur_factor).equals(expected)) {
+				out_str += cur_factor.subtract(one).toString() + " ";
+				factor_set.add(in_num.divide(cur_factor).subtract(one).toString());
+			}
+			if (factor_set.contains(cur_factor.toString()))
+				break;
+			cur_factor = cur_factor.add(one);
+		}
+		String[] arr = new String[factor_set.size()];
+		arr = factor_set.toArray(arr);
+		
+		 Arrays.sort(arr, new Comparator<String>() {
+		        @Override
+		        public int compare(String o1, String o2) {
+		            return Integer.valueOf(o1).compareTo(Integer.valueOf(o2));
+		        }
+		    });
+		for (String fac : arr) {
+			out_str += fac + " ";
+		}
+		System.out.println(out_str.trim());
+	}
+}

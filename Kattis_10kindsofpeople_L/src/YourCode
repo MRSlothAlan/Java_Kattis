@@ -1,0 +1,154 @@
+import java.io.*;
+import java.util.*;
+
+
+public class Main {
+    public static int[][] map, region; // label starts from 2.
+    // ai ya, just remove one of them la.
+    // public static boolean reached = false;
+    public static int identity = 0, 
+            r2, c2, r, c,
+            region_label;
+    
+    public static Stack<Integer> next_r, next_c;
+    
+    // improved version of the code.
+    public static void recursiveRegion(int cur_r, int cur_c) {
+        if (region[cur_r][cur_c] > 1) 
+            return;
+        else if (map[cur_r][cur_c] != identity) {   // potentially, this is the next starting point.
+            next_r.push(cur_r);
+            next_c.push(cur_c);
+            return;
+        }
+        else {
+            // n e s w
+            // checked[cur_r][cur_c] = 1;
+            region[cur_r][cur_c] = region_label;
+            if (cur_r - 1 >= 1) { recursiveRegion(cur_r - 1, cur_c); }
+            if (cur_r + 1 <= r) { recursiveRegion(cur_r + 1, cur_c); }
+            if (cur_c - 1 >= 1) { recursiveRegion(cur_r, cur_c - 1); }
+            if (cur_c + 1 <= c) { recursiveRegion(cur_r, cur_c + 1); }
+        }
+        return;
+    }
+    
+    /*
+    public static void recursiveTraversal(int cur_r, int cur_c) {
+        if (reached || checked[cur_r][cur_c] == 1) 
+            return;
+        else if (cur_r == r2 && cur_c == c2) {
+            reached = true;
+            return;
+        }
+        else if (map[cur_r][cur_c] != identity) {
+            checked[cur_r][cur_c] = 1;
+            return;
+        }
+        else {
+            // n e s w
+            checked[cur_r][cur_c] = 1;
+            if (cur_r - 1 >= 1) { recursiveTraversal(cur_r - 1, cur_c); }
+            if (cur_r + 1 <= r) { recursiveTraversal(cur_r + 1, cur_c); }
+            if (cur_c - 1 >= 1) { recursiveTraversal(cur_r, cur_c - 1); }
+            if (cur_c + 1 <= c) { recursiveTraversal(cur_r, cur_c + 1); }
+        }
+    }
+    */
+    
+    public static void main(String[] args) {
+        try {
+            // File file = new File("C:\\Users\\fxhk\\eclipse-workspace\\Kattis_10kindsofpeople\\src\\sample-01.in");
+            // Scanner sc = new Scanner(file);
+            Scanner sc = new Scanner(System.in);
+            r = sc.nextInt();   // rows of the map
+            c = sc.nextInt();   // cols of the map
+            next_r = new Stack<Integer>();
+            next_c = new Stack<Integer>();
+            
+            map = new int[r + 1][c + 1];
+            for (int i = 1; i <= r; i++) {
+                char[] row = sc.next().toCharArray(); 
+                for (int j = 1; j <= c; j++) {
+                    map[i][j] = row[j - 1] - '0';
+                }
+            }
+            int n = sc.nextInt();
+            
+            /*
+             * Run once to label different regions, and for the queries,
+             * just tell the region matches or not ?
+             */
+            region = new int[r + 1][c + 1];
+            region_label = 2;
+            next_r.push(1);
+            next_c.push(1);
+            // checked = new int[r + 1][c + 1];
+            
+            while (next_r.size() > 0) {
+                int cur_r = next_r.pop();
+                int cur_c = next_c.pop();
+                if (region[cur_r][cur_c] == 0) {
+                    identity = map[cur_r][cur_c];
+                    recursiveRegion(cur_r, cur_c);
+                }
+                region_label++;
+            }
+            
+            for (int i = 0; i < n; i++) {
+                int r1 = sc.nextInt(); int c1 = sc.nextInt();
+                r2 = sc.nextInt(); c2 = sc.nextInt();
+                identity = map[r1][c1];
+                if (map[r1][c1] != map[r2][c2]) {
+                    System.out.println("neither");
+                }
+                else if (map[r1][c1] == map[r2][c2]){
+                    if (region[r1][c1] != region[r2][c2]) {
+                        System.out.println("neither");
+                    }
+                    else {
+                        if (identity == 0){
+                            System.out.println("binary");
+                        }
+                        else if (identity == 1) {
+                            System.out.println("decimal");
+                        }
+                    }
+                }
+                // is it a traversal problem? I will go for fucking recursion
+                // even if they have the same identity,
+                // they might not be able to meet each other.
+            }
+            /*
+            for (int i = 0; i < n; i++) {
+                reached = false;
+                checked = new int[r + 1][c + 1];
+                int r1 = sc.nextInt(); int c1 = sc.nextInt();
+                r2 = sc.nextInt(); c2 = sc.nextInt();
+                if (map[r1][c1] != map[r2][c2]) {
+                    System.out.println("neither");
+                }
+                else {
+                    identity = map[r1][c1];
+                    recursiveTraversal(r1, c1);
+                    if (!reached) {
+                        System.out.println("neither");
+                    }
+                    else if (identity == 0){
+                        System.out.println("binary");
+                    }
+                    else if (identity == 1) {
+                        System.out.println("decimal");
+                    }
+                }
+                // is it a traversal problem? I will go for fucking recursion
+                // even if they have the same identity,
+                // they might not be able to meet each other.
+            }
+            */
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

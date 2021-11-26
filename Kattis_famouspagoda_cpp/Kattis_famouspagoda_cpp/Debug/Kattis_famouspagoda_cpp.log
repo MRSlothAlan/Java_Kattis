@@ -1,0 +1,3 @@
+﻿  Source.cpp
+c:\users\tingk\desktop\kattis\kattis_practices_repo\eclipse_workspace_coding\kattis_famouspagoda_cpp\kattis_famouspagoda_cpp\source.cpp(22): warning C4244: '+=': conversion from 'double' to 'int', possible loss of data
+  Kattis_famouspagoda_cpp.vcxproj -> C:\Users\tingk\Desktop\kattis\Kattis_practices_repo\eclipse_workspace_coding\Kattis_famouspagoda_cpp\Debug\Kattis_famouspagoda_cpp.exe
